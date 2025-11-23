@@ -11,7 +11,7 @@ El orden para hacer una práctica progresiva es el siguiente:
 1. Generador440Wav
     - Genera un fichero de audio .wav con una señal senoidal de 440Hz (La4)
 2. GeneradorNotasWav
-    - Genera un fichero de audio .wav con una serie de notas musicales (La4, Si4, Do5, Re5, Mi5, Fa5, Sol5, La5)
+    - Genera un fichero de audio .wav con una serie de notas musicales 
 3. NotasConSilencio
     - Genera un fichero de audio .wav con una serie de notas musicales separadas por silencios
 4. EcoWav
