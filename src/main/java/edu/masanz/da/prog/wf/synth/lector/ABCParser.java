@@ -32,9 +32,7 @@ public class ABCParser {
         List<NoteEvent> list = new ArrayList<>();
         String[] lines = abc.split("\n");
 
-        // TODO 91a: Procesar cada línea de las líneas del ABC
-            String line = "";
-
+        for (String line : lines) {
             line = line.trim();
             if (line.startsWith("L:")) {
                 String v = line.substring(2).trim();
@@ -51,16 +49,17 @@ public class ABCParser {
                 // aquí podríamos aplicar transposición
                 // pero por simplicidad no lo usamos
             }
+        }
 
         // regex para notas ABC
         Pattern pNote = Pattern.compile(
                 "([_=^]?)([A-Ga-gz])([',]*)(\\d*/?\\d*)?"
         );
 
-        for (String li : lines) {
-            if (li.startsWith("%") || li.contains(":")) continue;
+        for (String line : lines) {
+            if (line.startsWith("%") || line.contains(":")) continue;
 
-            Matcher m = pNote.matcher(li);
+            Matcher m = pNote.matcher(line);
             while (m.find()) {
 
                 String accidental = m.group(1);

@@ -14,10 +14,8 @@ public class Generador440Wav {
 
         // --- Generar señal senoidal ---
         for (int i = 0; i < numSamples; i++) {
-            // TODO 11: Generar la muestra i-ésima de la señal senoidal de 440 Hz
-            // sample = sin(2π⋅f⋅t), siendo f = 440 Hz y t = i / SAMPLE_RATE
-            double t = 1.0;                 // reemplazar valor correctamente
-            double sample = 0.0;            // reemplazar valor correctamente, utiliza FREQUENCY y t
+            double t = i / (double) SAMPLE_RATE;
+            double sample = Math.sin(2 * Math.PI * FREQUENCY * t); // sample = sin(2π⋅440⋅t)
 
             // Convertir a 16-bit PCM
             short val = (short) (sample * Short.MAX_VALUE);

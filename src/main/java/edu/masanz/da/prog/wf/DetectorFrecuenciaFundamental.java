@@ -47,21 +47,17 @@ public class DetectorFrecuenciaFundamental {
         fft(real, imag);
 
         // ---- 4. Buscar frecuencia fundamental ----
-        // TODO 61: Buscar frecuencia fundamental
         double sampleRate = format.getSampleRate();
-        int peak = 0;           // Índice del pico
-        double peakMag = 0;     // Magnitud del pico
+        int peak = 0;
+        double peakMag = 0;
 
-        // Se busca en la mitad del espectro
         for (int i = 1; i < N/2; i++) {
-            // Se calcula la magnitud de cada muestra que es la hipotenusa de real[i] e imag[i]
-            double mag = 1.0;       // Calcular magnitud
-            // Si la magnitud es mayor que la máxima encontrada, se actualiza el pico
-
-
-
+            double mag = Math.sqrt(real[i]*real[i] + imag[i]*imag[i]);
+            if (mag > peakMag) {
+                peakMag = mag;
+                peak = i;
+            }
         }
-
 
         double fundamental = (peak * sampleRate) / N;
         System.out.printf("Frecuencia detectada: %.2f Hz%n", fundamental);
@@ -85,6 +81,9 @@ public class DetectorFrecuenciaFundamental {
         int midiInt = (int)Math.round(midi);
         int nota = midiInt % 12;
         int octava = (midiInt / 12) - 1;
+
+        // diferencia en cents:
+        double cents = (midi - midiInt) * 100;
 
         return notas[nota] + octava;
     }

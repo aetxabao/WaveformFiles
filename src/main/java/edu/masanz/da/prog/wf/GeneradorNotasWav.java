@@ -18,19 +18,19 @@ public class GeneradorNotasWav {
 
         int idx = 0;
 
-        // TODO 21: Para cada frecuencia genera una señal senoidal de 2 segundos y añádela al array de datos
-        // La frecuencia de muestreo es SAMPLE_RATE, indica la cantidad de muestras en un segundo
-
-
-                double t = 1.0;
-                double sample = 0.0;
+        for (double freq : fs) {
+            for (int n = 0; n < SAMPLE_RATE * 2; n++) {
+                double t = n / (double) SAMPLE_RATE;
+                double sample = Math.sin(2 * Math.PI * freq * t);
 
                 // Convertir a 16-bit PCM
                 short val = (short)(sample * Short.MAX_VALUE);
                 data[2*idx] = (byte)(val & 0xFF);
                 data[2*idx+1] = (byte)((val >> 8) & 0xFF);
-                idx++;
 
+                idx++;
+            }
+        }
 
         // --- Escribir archivo WAV ---
         String outputFileName = "notas.wav";

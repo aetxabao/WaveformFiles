@@ -36,18 +36,14 @@ public class AnalizadorNotasCompleto {
 
         // ---- 2. Parámetros del pitch tracking ----
         int windowSize = 32768;                      // tamaño FFT
-        int hopSize = windowSize / 2;                // solapamiento 50%
+        int hopSize = windowSize / 2;               // solapamiento 50%
         double sampleRate = format.getSampleRate();
 
         double[] window = hanning(windowSize);
 
         // ---- 3. Recorrer audio por frames ----
         double freqAnt = 0.0;
-
-        // TODO 71: Para cada frame (ventana) encontrar la frecuencia (nota) dominante
-        // Empieza en la muestra cero y avanza de hopSize en hopSize hasta el final del audio
-            int start = 0;
-
+        for (int start = 0; start + windowSize < samples.length; start += hopSize) {
             double[] real = new double[windowSize];
             double[] imag = new double[windowSize];
 
@@ -84,7 +80,7 @@ public class AnalizadorNotasCompleto {
                 freqAnt = freq;
                 System.out.printf("t = %6.03f s  --> %7.2f Hz  -->  %s\n", timeSec, freq, nota);
             }
-
+        }
     }
 
     // --------------------- Ventana Hanning ---------------------
@@ -109,8 +105,11 @@ public class AnalizadorNotasCompleto {
 
         int nota = midiInt % 12;
         int octava = (midiInt / 12) - 1;
+        double cents = (midi - midiInt) * 100;
 
         return notas[nota] + octava;
+//        return notas[nota] + octava +
+//                String.format(" (%+.1f cents)", cents);
     }
 
     // --------------------- FFT ---------------------

@@ -38,12 +38,10 @@ import java.util.List;
         }
 
         // Convert to array
-        // TODO 81: Convierte la lista de valores buffer a un array out de double[]
-        // Para cada elemento de buffer, asignalo a out en la misma posición
-        double[] out = null;
-
-
-
+        double[] out = new double[buffer.size()];
+        for (int i = 0; i < out.length; i++) {
+            out[i] = buffer.get(i);
+        }
 
         String outputFileName = "synth.wav";
 

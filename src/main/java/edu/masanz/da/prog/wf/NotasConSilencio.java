@@ -21,33 +21,31 @@ public class NotasConSilencio {
         byte[] data = new byte[totalSamples * 2];  // 16-bit PCM → 2 bytes por sample
         int idx = 0;
 
-        // TODO 31: Para cada frecuencia genera una señal senoidal seguida de un silencio
-        double f = 1.0;
-
+        for (double freq : fs) {
 
             // --------------------------
             // 1. Generar la nota
             // --------------------------
-                int i = 0;
-
-                double t = i / (double) SAMPLE_RATE;
-                double sample = Math.sin(2 * Math.PI * f * t);
+            for (int n = 0; n < samplesPerNote; n++) {
+                double t = n / (double) SAMPLE_RATE;
+                double sample = Math.sin(2 * Math.PI * freq * t);
 
                 short val = (short)(sample * Short.MAX_VALUE);
 
                 data[2*idx]     = (byte)(val & 0xFF);
                 data[2*idx + 1] = (byte)((val >> 8) & 0xFF);
                 idx++;
+            }
 
             // --------------------------
             // 2. Añadir silencio
             // --------------------------
-
+            for (int n = 0; n < samplesSilence; n++) {
                 data[2*idx] = 0;
                 data[2*idx + 1] = 0;
                 idx++;
-
-
+            }
+        }
 
         // Guardar WAV
         String outputFileName = "notas2.wav";

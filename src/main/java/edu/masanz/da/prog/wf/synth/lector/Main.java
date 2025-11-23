@@ -49,9 +49,8 @@ public class Main {
 
         // Convertir a array
         double[] out = new double[buffer.size()];
-        for (int i = 0; i < out.length; i++) {
+        for (int i = 0; i < out.length; i++)
             out[i] = buffer.get(i);
-        }
 
         WavWriter.save(wavFileName, out, SR);
 

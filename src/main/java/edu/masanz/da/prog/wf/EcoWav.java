@@ -49,17 +49,20 @@ public class EcoWav {
         System.arraycopy(samples, 0, outputSamples, 0, numSamples);
 
         // Añadimos la señal retardada
-        // TODO 41: A cada muestra sumale la muestra retrasada por delaySamples multiplicada por decay
+        for (int i = 0; i < numSamples; i++) {
+            int idx = i + delaySamples;
+            if (idx < outputSamples.length) {
+                int mixed = outputSamples[idx] + (int)(samples[i] * decay);
 
-            int mixed = (int)(0.0);
+                // Limitar por saturación (clipping seguro)
+                if (mixed > Short.MAX_VALUE) mixed = Short.MAX_VALUE;
+                if (mixed < Short.MIN_VALUE) mixed = Short.MIN_VALUE;
 
-            // Limitar por saturación (clipping seguro)
-            // Al sumar, puede que se pase del rango de un short, así que se limita
-            if (mixed > Short.MAX_VALUE) mixed = Short.MAX_VALUE;
-            if (mixed < Short.MIN_VALUE) mixed = Short.MIN_VALUE;
+                outputSamples[idx] = (short) mixed;
+            }
+        }
 
-
-        // ---- 3. Convertir de outputSamples[] a outBytes[] ----
+        // ---- 3. Convertir de sample[] a byte[] ----
         byte[] outBytes = new byte[outputSamples.length * 2];
         for (int i = 0; i < outputSamples.length; i++) {
             outBytes[2*i] = (byte)(outputSamples[i] & 0xFF);

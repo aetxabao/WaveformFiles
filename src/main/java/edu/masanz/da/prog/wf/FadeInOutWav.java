@@ -43,25 +43,40 @@ public class FadeInOutWav {
         // No pasarse del tamaño
         fadeSamples = Math.min(fadeSamples, numSamples / 2);
 
+//        for (int i = 0; i < numSamples; i++) {
+//            float gain = 1.0f;
+//
+//            // Fade-in
+//            if (i < fadeSamples) {
+//                gain = (float)i / fadeSamples;
+//            }
+//
+//            // Fade-out
+//            if (i > numSamples - fadeSamples) {
+//                int pos = numSamples - i;
+//                float fadeOutGain = (float)pos / fadeSamples;
+//                gain = Math.min(gain, fadeOutGain);
+//            }
+//
+//            samples[i] = (short)(samples[i] * gain);
+//        }
 
-        // TODO 51: A cada muestra donde se hace el fade (in y out) aplicar la ventana de Hann
         // http://www.labbookpages.co.uk/audio/wavGenFunc.html
-            int i = 0;
+        for (int s = 0 ; s < fadeSamples ; s++) {
+            // Calculate weight based on Hann 'raised cosine' window
+            double weight = 0.5 * (1 - Math.cos(Math.PI * s / (fadeSamples - 1)));
 
-            // Calcula el peso basado en la ventana de Hann 'coseno elevado'
-            double weight = 0.5 * (1 - Math.cos(Math.PI * i / (fadeSamples - 1)));
-
-            // Multiplicar la muestra por el peso calculado para el fade-in y fade-out
-
-
-
+            // Apply weighting
+            samples[s] *= weight;                      // Fade In
+            samples[numSamples - (s+1)] *= weight;       // Fade Out
+        }
 
         // ---- 3. Convertir samples → bytes ----
         byte[] outBytes = new byte[samples.length * 2];
 
-        for (int j = 0; j < samples.length; j++) {
-            outBytes[2*j]     = (byte)(samples[j] & 0xFF);
-            outBytes[2*j + 1] = (byte)((samples[j] >> 8) & 0xFF);
+        for (int i = 0; i < samples.length; i++) {
+            outBytes[2*i]     = (byte)(samples[i] & 0xFF);
+            outBytes[2*i + 1] = (byte)((samples[i] >> 8) & 0xFF);
         }
 
         // ---- 4. Guardar WAV ----
